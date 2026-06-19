@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation</title>
+    <style>
+        /* CSS reset & modern variables */
+        :root {
+            --bg-color: #fafafa;
+            --text-primary: #18181b;
+            --btn-yes-bg: #18181b;
+            --btn-yes-text: #ffffff;
+            --btn-no-bg: #f4f4f5;
+            --btn-no-text: #27272a;
+            --btn-hover-opacity: 0.9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            overflow: hidden; /* Prevent scrollbars as the Yes button expands */
+        }
+
+        /* Centered page layout */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+        }
+
+        /* Simple button group */
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Shared button styling */
+        .btn {
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.15s ease;
+        }
+
+        /* Specific buttons */
+        #btn-yes {
+            background-color: var(--btn-yes-bg);
+            color: var(--btn-yes-text);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.15s ease;
+            transform-origin: center;
+        }
+
+        #btn-no {
+            background-color: var(--btn-no-bg);
+            color: var(--btn-no-text);
+            transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-origin: center;
+        }
+
+        .btn:hover {
+            opacity: var(--btn-hover-opacity);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Will you go on another date with Sri?</h1>
+        <div class="button-group">
+            <button type="button" class="btn" id="btn-yes">Yes</button>
+            <button type="button" class="btn" id="btn-no" tabindex="-1">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Check if page was refreshed after landing on success state
+        if (sessionStorage.getItem('successStateReached') === 'true') {
+            sessionStorage.removeItem('successStateReached');
+            window.location.href = 'page1.html';
+        }
+
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        const header = document.querySelector('h1');
+        const buttonGroup = document.querySelector('.button-group');
+
+        let origCenter = null;
+        let yesScale = 1.0;
+
+        // Memoize the original center coordinate of the No button to compute precise offset translations
+        function getOrigCenter() {
+            if (!origCenter) {
+                const prevTransform = btnNo.style.transform;
+                btnNo.style.transform = 'none';
+                const rect = btnNo.getBoundingClientRect();
+                origCenter = {
+                    x: rect.left + rect.width / 2,
+                    y: rect.top + rect.height / 2
+                };
+                btnNo.style.transform = prevTransform;
+            }
+            return origCenter;
+        }
+
+        // Reset memoized center if window dimensions change
+        window.addEventListener('resize', () => {
+            origCenter = null;
+        });
+
+        function triggerDodge(cursorX, cursorY) {
+            const center = getOrigCenter();
+            
+            // Set dynamic coordinate range depending on viewport size
+            const rangeX = Math.min(window.innerWidth / 2.5, 300);
+            const rangeY = Math.min(window.innerHeight / 2.5, 300);
+
+            let randomX = 0;
+            let randomY = 0;
+            let attempts = 0;
+
+            // Loop to ensure the new translation lands the button at least 200px away from the mouse cursor
+            while (attempts < 50) {
+                randomX = (Math.random() - 0.5) * 2 * rangeX;
+                randomY = (Math.random() - 0.5) * 2 * rangeY;
+
+                const newCenterX = center.x + randomX;
+                const newCenterY = center.y + randomY;
+                const distToCursor = Math.hypot(newCenterX - cursorX, newCenterY - cursorY);
+
+                if (distToCursor > 200) {
+                    break;
+                }
+                attempts++;
+            }
+
+            // Apply shrinking (scale(0.6)) and translating
+            btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.6)`;
+            
+            // Grow Yes button incrementally
+            yesScale += 1.5;
+            btnYes.style.transform = `scale(${yesScale})`;
+        }
+
+        // Mouse Move Proximity Handler
+        function handleMouseMove(e) {
+            if (buttonGroup.style.opacity === '0') return; // Don't track if success state is triggered
+
+            const rect = btnNo.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return; // Ignore layout-unready nodes
+            if (rect.left === 0 && rect.top === 0) return;     // Ignore loading states
+
+            const btnNoCenterX = rect.left + rect.width / 2;
+            const btnNoCenterY = rect.top + rect.height / 2;
+
+            const distance = Math.hypot(e.clientX - btnNoCenterX, e.clientY - btnNoCenterY);
+
+            // Trigger runaway dodge if mouse enters the 80px proximity circle
+            if (distance < 80) {
+                triggerDodge(e.clientX, e.clientY);
+            }
+        }
+
+        // Delay mouse tracking until layout settles to prevent race conditions on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.addEventListener('mousemove', handleMouseMove);
+            }, 300);
+        });
+
+        // Block clicks and teleport the button if they somehow manage to click it (e.g. extremely fast cursor speed)
+        btnNo.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            triggerDodge(e.clientX, e.clientY);
+        });
+
+        btnNo.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            triggerDodge(e.clientX, e.clientY);
+        });
+
+        btnNo.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                triggerDodge(0, 0);
+            }
+        });
+
+        // Mobile Touch Tap Dodge
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Stop native taps & emulated click events
+            const touch = e.touches[0];
+            triggerDodge(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        // Success State Action
+        btnYes.addEventListener('click', () => {
+            // Store that success state was reached so next refresh redirects back to the survey
+            sessionStorage.setItem('successStateReached', 'true');
+
+            // Disable further dodge events
+            btnNo.style.pointerEvents = 'none';
+
+            // Fade out the buttons
+            buttonGroup.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            buttonGroup.style.opacity = '0';
+            buttonGroup.style.transform = 'scale(0.8)';
+
+            // Hide them completely once faded
+            setTimeout(() => {
+                buttonGroup.style.display = 'none';
+            }, 400);
+
+            // Animate H1 header text change
+            header.style.transition = 'opacity 0.3s ease';
+            header.style.opacity = '0';
+            
+            setTimeout(() => {
+                header.textContent = "Perfect. I'll plan the next one.";
+                header.style.opacity = '1';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Date Review Survey</title>
+    <style>
+        /* Modern minimalist reset */
+        :root {
+            --bg-color: #fafafa;
+            --text-primary: #18181b;
+            --text-secondary: #52525b;
+            --star-empty: #e4e4e7;
+            --star-filled: #18181b;
+            --btn-bg: #18181b;
+            --btn-text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        /* Container constrained for mobile/desktop layouts */
+        .survey-container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        /* Question Block structure */
+        .question-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .question-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Star rating button list */
+        .stars-container {
+            display: flex;
+            gap: 4px;
+        }
+
+        .star {
+            font-size: 26px;
+            cursor: pointer;
+            color: var(--star-empty);
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.1s ease, transform 0.1s ease;
+        }
+
+        .star:focus {
+            outline: none;
+        }
+
+        .star.filled {
+            color: var(--star-filled);
+        }
+
+        /* Full width Next button */
+        .btn-next {
+            width: 100%;
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: opacity 0.15s ease;
+        }
+
+        .btn-next:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .btn-next:active:not(:disabled) {
+            transform: scale(0.99);
+        }
+
+        .btn-next:disabled {
+            background-color: #d4d4d8;
+            color: #a1a1aa;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="survey-container">
+        <h1>Date Review</h1>
+
+        <!-- Banter Quality -->
+        <div class="question-block">
+            <span class="question-title">Banter Quality</span>
+            <div class="stars-container" data-metric="banter">
+                <button type="button" class="star" data-value="1">★</button>
+                <button type="button" class="star" data-value="2">★</button>
+                <button type="button" class="star" data-value="3">★</button>
+                <button type="button" class="star" data-value="4">★</button>
+                <button type="button" class="star" data-value="5">★</button>
+            </div>
+        </div>
+
+        <!-- Eye Contact -->
+        <div class="question-block">
+            <span class="question-title">Eye Contact</span>
+            <div class="stars-container" data-metric="eyeContact">
+                <button type="button" class="star" data-value="1">★</button>
+                <button type="button" class="star" data-value="2">★</button>
+                <button type="button" class="star" data-value="3">★</button>
+                <button type="button" class="star" data-value="4">★</button>
+                <button type="button" class="star" data-value="5">★</button>
+            </div>
+        </div>
+
+        <!-- Snack Selection -->
+        <div class="question-block">
+            <span class="question-title">Snack Selection</span>
+            <div class="stars-container" data-metric="snackSelection">
+                <button type="button" class="star" data-value="1">★</button>
+                <button type="button" class="star" data-value="2">★</button>
+                <button type="button" class="star" data-value="3">★</button>
+                <button type="button" class="star" data-value="4">★</button>
+                <button type="button" class="star" data-value="5">★</button>
+            </div>
+        </div>
+
+        <!-- Awkward Silence Frequency -->
+        <div class="question-block">
+            <span class="question-title">Awkward Silence Frequency</span>
+            <div class="stars-container" data-metric="awkwardSilence">
+                <button type="button" class="star" data-value="1">★</button>
+                <button type="button" class="star" data-value="2">★</button>
+                <button type="button" class="star" data-value="3">★</button>
+                <button type="button" class="star" data-value="4">★</button>
+                <button type="button" class="star" data-value="5">★</button>
+            </div>
+        </div>
+
+        <!-- Overall Vibe -->
+        <div class="question-block">
+            <span class="question-title">Overall Vibe</span>
+            <div class="stars-container" data-metric="overallVibe">
+                <button type="button" class="star" data-value="1">★</button>
+                <button type="button" class="star" data-value="2">★</button>
+                <button type="button" class="star" data-value="3">★</button>
+                <button type="button" class="star" data-value="4">★</button>
+                <button type="button" class="star" data-value="5">★</button>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" class="btn-next" id="btn-next" disabled>Next</button>
+    </div>
+
+    <script>
+        const starContainers = document.querySelectorAll('.stars-container');
+        const btnNext = document.getElementById('btn-next');
+
+        // Track completion of all 5 metrics
+        const ratings = {
+            banter: 0,
+            eyeContact: 0,
+            snackSelection: 0,
+            awkwardSilence: 0,
+            overallVibe: 0
+        };
+
+        // Enable button if all metrics are rated (> 0)
+        function checkRatingsComplete() {
+            const allRated = Object.values(ratings).every(r => r > 0);
+            if (allRated) {
+                btnNext.removeAttribute('disabled');
+            } else {
+                btnNext.setAttribute('disabled', 'true');
+            }
+        }
+
+        starContainers.forEach(container => {
+            const metric = container.getAttribute('data-metric');
+            const stars = container.querySelectorAll('.star');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.getAttribute('data-value'));
+                    ratings[metric] = rating;
+
+                    stars.forEach(s => {
+                        const val = parseInt(s.getAttribute('data-value'));
+                        if (val <= rating) {
+                            s.classList.add('filled');
+                        } else {
+                            s.classList.remove('filled');
+                        }
+                    });
+
+                    checkRatingsComplete();
+                });
+            });
+        });
+
+        // Next Button Action
+        btnNext.addEventListener('click', () => {
+            console.log('Next clicked');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
