@@ -42,6 +42,8 @@
             justify-content: center;
             gap: 24px;
             text-align: center;
+            max-width: 600px;
+            width: 100%;
         }
 
         h1 {
@@ -49,12 +51,15 @@
             font-weight: 600;
             letter-spacing: -0.025em;
             color: var(--text-primary);
+            line-height: 1.3;
         }
 
         /* Simple button group */
         .button-group {
             display: flex;
             gap: 12px;
+            justify-content: center;
+            position: relative;
         }
 
         /* Shared button styling */
@@ -87,85 +92,6 @@
         .btn:hover {
             opacity: var(--btn-hover-opacity);
         }
-
-        /* Calendar container styling */
-        #calendar-container {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 16px;
-            width: 100%;
-        }
-
-        #calendar-month-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 16px;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px 8px;
-            max-width: 300px;
-            width: 100%;
-            margin-bottom: 24px;
-        }
-
-        .calendar-day-header {
-            font-size: 11px;
-            font-weight: 600;
-            color: #a1a1aa;
-            text-transform: uppercase;
-            text-align: center;
-            padding: 4px 0;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            border-radius: 50%;
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.15s ease;
-            border: 1px solid transparent;
-        }
-
-        .calendar-day.inactive {
-            color: #d4d4d8;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        .calendar-day.active {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .calendar-day.active:hover {
-            background-color: var(--btn-no-bg);
-        }
-
-        .calendar-day.selected {
-            background-color: var(--btn-yes-bg) !important;
-            color: var(--btn-yes-text) !important;
-            font-weight: 600;
-        }
-
-        #btn-submit-date:disabled {
-            background-color: #d4d4d8;
-            color: #a1a1aa;
-            cursor: not-allowed;
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
@@ -176,12 +102,6 @@
         <div class="button-group">
             <button type="button" class="btn" id="btn-yes">Yes</button>
             <button type="button" class="btn" id="btn-no" tabindex="-1">No</button>
-        </div>
-
-        <div id="calendar-container">
-            <div id="calendar-month-label"></div>
-            <div id="calendar-grid" class="calendar-grid"></div>
-            <button type="button" class="btn" id="btn-submit-date" disabled>Next</button>
         </div>
     </div>
 
@@ -214,11 +134,6 @@
             }
             return origCenter;
         }
-
-        // Reset memoized center if window dimensions change
-        window.addEventListener('resize', () => {
-            origCenter = null;
-        });
 
         function triggerDodge(cursorX, cursorY) {
             const center = getOrigCenter();
@@ -273,6 +188,11 @@
             }
         }
 
+        // Reset memoized center if window dimensions change
+        window.addEventListener('resize', () => {
+            origCenter = null;
+        });
+
         // Delay mouse tracking until layout settles to prevent race conditions on page load
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
@@ -307,89 +227,6 @@
             triggerDodge(touch.clientX, touch.clientY);
         }, { passive: false });
 
-        const calendarContainer = document.getElementById('calendar-container');
-        const calendarGrid = document.getElementById('calendar-grid');
-        const monthLabel = document.getElementById('calendar-month-label');
-        const btnSubmitDate = document.getElementById('btn-submit-date');
-        let selectedDate = '';
-
-        function generateCalendar() {
-            const today = new Date();
-            today.setHours(0,0,0,0);
-            
-            const maxDate = new Date(today);
-            maxDate.setDate(today.getDate() + 14);
-
-            // Start of current week (Monday)
-            const startOfWeek = new Date(today);
-            const dayOfWeek = startOfWeek.getDay();
-            const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-            startOfWeek.setDate(startOfWeek.getDate() + diffToMonday);
-
-            // End of final week (Sunday)
-            const endOfWeek = new Date(maxDate);
-            const maxDayOfWeek = endOfWeek.getDay();
-            const diffToSunday = maxDayOfWeek === 0 ? 0 : 7 - maxDayOfWeek;
-            endOfWeek.setDate(endOfWeek.getDate() + diffToSunday);
-
-            // Dynamic Month Label
-            const startMonth = startOfWeek.toLocaleString('default', { month: 'long' });
-            const startYear = startOfWeek.getFullYear();
-            const endMonth = endOfWeek.toLocaleString('default', { month: 'long' });
-            const endYear = endOfWeek.getFullYear();
-
-            let labelText = `${startMonth} ${startYear}`;
-            if (startMonth !== endMonth) {
-                if (startYear !== endYear) {
-                    labelText = `${startMonth} ${startYear} / ${endMonth} ${endYear}`;
-                } else {
-                    labelText = `${startMonth} / ${endMonth} ${startYear}`;
-                }
-            }
-            monthLabel.textContent = labelText;
-
-            // Generate Calendar Grid
-            calendarGrid.innerHTML = '';
-
-            // Weekday Headers
-            const dayHeaders = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-            dayHeaders.forEach(h => {
-                const el = document.createElement('div');
-                el.className = 'calendar-day-header';
-                el.textContent = h;
-                calendarGrid.appendChild(el);
-            });
-
-            // Grid Days
-            let current = new Date(startOfWeek);
-            while (current <= endOfWeek) {
-                const el = document.createElement('div');
-                el.className = 'calendar-day';
-                el.textContent = current.getDate();
-                
-                const isWithinRange = current >= today && current <= maxDate;
-                if (isWithinRange) {
-                    el.classList.add('active');
-                    const dateStr = current.toDateString();
-                    el.dataset.date = dateStr;
-                    
-                    el.addEventListener('click', () => {
-                        const prevSelected = calendarGrid.querySelector('.calendar-day.selected');
-                        if (prevSelected) prevSelected.classList.remove('selected');
-                        
-                        el.classList.add('selected');
-                        selectedDate = dateStr;
-                        btnSubmitDate.removeAttribute('disabled');
-                    });
-                } else {
-                    el.classList.add('inactive');
-                }
-                
-                calendarGrid.appendChild(el);
-                current.setDate(current.getDate() + 1);
-            }
-        }
-
         // Success State Action (Yes clicked)
         btnYes.addEventListener('click', () => {
             // Store that success state was reached so next refresh redirects back to the survey
@@ -406,45 +243,16 @@
             // Hide them completely once faded
             setTimeout(() => {
                 buttonGroup.style.display = 'none';
-                
-                // Set up and reveal calendar
-                generateCalendar();
-                calendarContainer.style.display = 'flex';
-                setTimeout(() => {
-                    calendarContainer.style.opacity = '1';
-                }, 50);
             }, 400);
 
-            // Animate H1 header text change
+            // Animate H1 header text change to new requested text
             header.style.transition = 'opacity 0.3s ease';
             header.style.opacity = '0';
             
             setTimeout(() => {
-                header.textContent = "Perfect. I'll plan the next one.";
+                header.textContent = "Sri would love to plan the next one with you ...Sri will contact you soon!! Stay tuned..";
                 header.style.opacity = '1';
             }, 300);
-        });
-
-        // Submit Date Action (Next clicked under calendar)
-        btnSubmitDate.addEventListener('click', () => {
-            calendarContainer.style.transition = 'opacity 0.4s ease';
-            calendarContainer.style.opacity = '0';
-            header.style.transition = 'opacity 0.4s ease';
-            header.style.opacity = '0';
-
-            setTimeout(() => {
-                calendarContainer.style.display = 'none';
-                
-                const dateObj = new Date(selectedDate);
-                const formattedDate = dateObj.toLocaleDateString('default', {
-                    weekday: 'long',
-                    month: 'long',
-                    day: 'numeric'
-                });
-
-                header.textContent = `It's a date! See you on ${formattedDate} ✨`;
-                header.style.opacity = '1';
-            }, 400);
         });
     </script>
 </body>
