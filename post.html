@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read full publication on Cog in the Wheel.">
+    <title>Blog Post — Cog in the Wheel</title>
+    <link rel="stylesheet" href="./style.css?v=2.4">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="container">
+            <h1 class="site-title"><a href="./index.html">Cog in the Wheel</a></h1>
+            <nav class="main-nav">
+                <a href="./index.html" class="nav-link">Home</a>
+                <a href="./blog.html" class="nav-link active">Blog posts & publications</a>
+                <a href="./contact.html" class="nav-link">Contact Sri</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <article class="post-detail">
+                <header class="post-header">
+                    <div class="blog-meta" id="post-date">Loading...</div>
+                    <h1 class="post-title" id="post-title">Loading Article...</h1>
+                    <div class="post-image-container" id="post-image-container">
+                        <img src="" id="post-image" alt="Article Hero Image" class="post-hero-image">
+                    </div>
+                </header>
+                
+                <div class="post-body" id="post-body">
+                    <p>Fetching article content...</p>
+                </div>
+                
+                <div class="post-footer">
+                    <hr class="post-footer-divider">
+                    <a href="./blog.html" class="back-to-blog">&larr; Back to Blogs & Publications</a>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; Sri. Curated in 2026.</p>
+        </div>
+    </footer>
+
+    <!-- Dynamic Article Loading Script -->
+    <script>
+        const posts = {
+            'whitespace': {
+                title: 'The Power of Whitespace in Minimalist Web Design',
+                date: 'June 20, 2026 — Essay',
+                image: './Single_cell_01.jpg',
+                file: './posts/whitespace.html'
+            },
+            'shadows': {
+                title: 'Camera in Hand: Exploring Shadows and Light',
+                date: 'May 15, 2026 — Photography',
+                image: './DR_MFP_07.jpg',
+                file: './posts/shadows.html'
+            },
+            'code-medium': {
+                title: 'Writings & Platforms: Code as a Medium',
+                date: 'April 10, 2026 — Technology',
+                image: './DR_MFP_04.jpg',
+                file: './posts/code-medium.html'
+            },
+            'modular-hardware': {
+                title: 'Designing for Scale: Modular Hardware Architectures',
+                date: 'March 18, 2026 — Hardware',
+                image: './microfluidic_chip_02.png',
+                file: './posts/modular-hardware.html'
+            },
+            'flow-mechanics': {
+                title: 'The Mechanics of Flow: Fluid Dynamics in Microscale',
+                date: 'February 22, 2026 — Research',
+                image: './lab_setup_02.png',
+                file: './posts/flow-mechanics.html'
+            },
+            'cell-sorting': {
+                title: 'Single-Cell Sorting: Abstract Patterns of Selection',
+                date: 'January 14, 2026 — Biology',
+                image: './microscope_view_03.png',
+                file: './posts/cell-sorting.html'
+            }
+        };
+
+        // Parse query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        const post = posts[postId];
+
+        if (post) {
+            // Inject metadata
+            document.getElementById('post-title').textContent = post.title;
+            document.getElementById('post-date').textContent = post.date;
+            document.title = `${post.title} — Cog in the Wheel`;
+            
+            const heroImg = document.getElementById('post-image');
+            heroImg.src = post.image;
+            heroImg.alt = post.title;
+            
+            // Set page description meta tag
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', `${post.title}. Read the full publication by Sri.`);
+            }
+
+            // Fetch and inject post body HTML
+            fetch(post.file)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Post content file not found');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById('post-body').innerHTML = html;
+                })
+                .catch(err => {
+                    document.getElementById('post-body').innerHTML = '<p>Error loading article content. Please try again later.</p>';
+                    console.error(err);
+                });
+        } else {
+            // Post not found
+            document.getElementById('post-title').textContent = 'Article Not Found';
+            document.getElementById('post-date').textContent = '';
+            document.getElementById('post-image-container').style.display = 'none';
+            document.getElementById('post-body').innerHTML = '<p>The requested article could not be found. <a href="./blog.html">Go back to writings</a>.</p>';
+            document.title = 'Article Not Found — Cog in the Wheel';
+        }
+    </script>
+
+</body>
+</html>
