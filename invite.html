@@ -10,18 +10,18 @@
             src: url('./GrandHotel-Regular.ttf') format('truetype');
         }
         :root {
-            --bg-color: #ffffff;
-            --text-primary: #18181b;
-            --btn-yes-bg: #f08a78;
+            --text-primary: #4a3b32;
+            --text-secondary: #7a6a5e;
+            --btn-yes-bg: linear-gradient(135deg, #f08a78 0%, #ff96a7 100%);
             --btn-yes-text: #ffffff;
-            --btn-no-bg: #f4f4f5;
-            --btn-no-text: #71717a;
+            --btn-no-bg: rgba(255, 255, 255, 0.55);
+            --btn-no-text: #4a3b32;
             --btn-hover-opacity: 0.9;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'GrandHotel', -apple-system-rounded, "SF Pro Rounded", system-ui, sans-serif;
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #fffbf5 0%, #ffeef2 100%);
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
@@ -37,51 +37,71 @@
             justify-content: center;
             gap: 24px;
             text-align: center;
-            max-width: 600px;
+            max-width: 440px;
             width: 100%;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.15);
         }
         h1 {
-            font-size: 52px;
+            font-size: 46px;
             font-weight: 400;
             line-height: 1.2;
         }
         .button-group {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             justify-content: center;
             position: relative;
+            margin-top: 12px;
         }
         .btn {
             font-family: inherit;
             font-size: 20px;
             font-weight: 500;
-            padding: 10px 24px;
+            padding: 12px 28px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         #btn-yes {
-            background-color: var(--btn-yes-bg);
+            background: var(--btn-yes-bg);
             color: var(--btn-yes-text);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: 0 4px 14px rgba(240, 138, 120, 0.4);
             transform-origin: center;
         }
         #btn-no {
-            background-color: var(--btn-no-bg);
+            background: var(--btn-no-bg);
             color: var(--btn-no-text);
-            transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             transform-origin: center;
         }
         #btn-yes:hover {
-            background-color: #e87763;
-            box-shadow: 0 0 16px rgba(240, 138, 120, 0.35);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 18px rgba(240, 138, 120, 0.55);
         }
         #btn-no:hover {
-            opacity: 0.9;
+            background-color: rgba(255, 255, 255, 0.8);
         }
         .btn:active {
             transform: scale(0.98);
+        }
+        .heart {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            display: inline-block;
+            font-size: 16px;
+        }
+        .heart.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -89,7 +109,7 @@
     <div class="container">
         <h1>Will you go on another date with Sri?</h1>
         <div class="button-group">
-            <button type="button" class="btn" id="btn-yes">Yes</button>
+            <button type="button" class="btn" id="btn-yes">Yes <span class="heart" id="yes-heart">❤️</span></button>
             <button type="button" class="btn" id="btn-no" tabindex="-1">No</button>
         </div>
     </div>
@@ -130,8 +150,18 @@
             }
 
             btnNo.style.transform = `translate(${randomX}px, ${randomY}px) scale(0.6)`;
-            yesScale += 1.5;
-            btnYes.style.transform = `scale(${yesScale})`;
+            
+            // ponytail: cap yesScale at 4.0 (maximum size) and fade in the heart
+            if (yesScale < 4.0) {
+                yesScale += 1.5;
+                btnYes.style.transform = `scale(${yesScale})`;
+            }
+            if (yesScale >= 4.0) {
+                const heart = document.getElementById('yes-heart');
+                if (heart) {
+                    heart.classList.add('show');
+                }
+            }
         }
 
         document.addEventListener('mousemove', (e) => {
