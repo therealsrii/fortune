@@ -29,6 +29,7 @@
             align-items: center;
             padding: 24px;
             overflow: hidden;
+            position: relative;
         }
         .container {
             display: flex;
@@ -46,6 +47,8 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 8px 32px rgba(255, 182, 193, 0.15);
+            position: relative;
+            z-index: 10;
         }
         h1 {
             font-size: 46px;
@@ -103,25 +106,75 @@
         .heart.show {
             opacity: 1;
         }
+        
+        /* Success State styling */
+        .success-header {
+            font-size: 52px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+        .success-body {
+            font-size: 22px;
+            color: var(--text-primary);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        .success-body-sub {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        /* Floating elements in background */
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 182, 193, 0.5);
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp 6s linear forwards;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% {
+                transform: translateY(-110vh) translateX(var(--random-x, 20px)) rotate(var(--random-rotate, 360deg));
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Will you go on another date with Sri?</h1>
-        <div class="button-group">
-            <button type="button" class="btn" id="btn-yes">Yes <span class="heart" id="yes-heart">❤️</span></button>
-            <button type="button" class="btn" id="btn-no" tabindex="-1">No</button>
+        <div id="invite-card">
+            <h1>Will you go on another date with Sri?</h1>
+            <div class="button-group">
+                <button type="button" class="btn" id="btn-yes">Yes <span class="heart" id="yes-heart">❤️</span></button>
+                <button type="button" class="btn" id="btn-no" tabindex="-1">No</button>
+            </div>
+        </div>
+        <div id="success-card" style="display: none; opacity: 0; transition: opacity 0.5s ease-in-out;">
+            <h1 class="success-header">It's Official! 🎉</h1>
+            <p class="success-body">Excellent choice. Your application for Date #2 has been fast-tracked and approved.</p>
+            <p class="success-body-sub">Next time, we can pick an activity where you actually have a chance at winning. I'll text you soon to lock in the details! 😉☕</p>
         </div>
     </div>
 
     <script>
         const btnNo = document.getElementById('btn-no');
         const btnYes = document.getElementById('btn-yes');
-        const header = document.querySelector('h1');
-        const buttonGroup = document.querySelector('.button-group');
+        const inviteCard = document.getElementById('invite-card');
+        const successCard = document.getElementById('success-card');
 
         let origCenter = null;
         let yesScale = 1.0;
+        let heartsInterval = null;
 
         function getOrigCenter() {
             if (!origCenter) {
@@ -165,7 +218,7 @@
         }
 
         document.addEventListener('mousemove', (e) => {
-            if (buttonGroup.style.opacity === '0') return;
+            if (inviteCard.style.display === 'none') return;
             const rect = btnNo.getBoundingClientRect();
             if (!rect.width || !rect.left) return;
             if (Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2)) < 80) {
@@ -178,18 +231,46 @@
         btnNo.addEventListener('click', (e) => { e.preventDefault(); triggerDodge(e.clientX, e.clientY); });
         btnNo.addEventListener('touchstart', (e) => { e.preventDefault(); triggerDodge(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
 
-        btnYes.addEventListener('click', () => {
-            buttonGroup.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-            buttonGroup.style.opacity = '0';
-            buttonGroup.style.transform = 'scale(0.8)';
-            setTimeout(() => { buttonGroup.style.display = 'none'; }, 400);
+        function spawnHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            const emojis = ['🌸', '✨', '💖', '💕', '❤️'];
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const startX = Math.random() * window.innerWidth;
+            const size = Math.random() * 20 + 16; 
+            const duration = Math.random() * 4 + 4; 
+            const randomX = (Math.random() - 0.5) * 100; 
+            const randomRotate = (Math.random() - 0.5) * 360;
 
-            header.style.transition = 'opacity 0.3s ease';
-            header.style.opacity = '0';
+            heart.style.left = `${startX}px`;
+            heart.style.fontSize = `${size}px`;
+            heart.style.animationDuration = `${duration}s`;
+            heart.style.setProperty('--random-x', `${randomX}px`);
+            heart.style.setProperty('--random-rotate', `${randomRotate}deg`);
+
+            document.body.appendChild(heart);
+
             setTimeout(() => {
-                header.textContent = "Sri would love to plan the next one with you ...Sri will contact you soon!! Stay tuned..";
-                header.style.opacity = '1';
-            }, 300);
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        btnYes.addEventListener('click', () => {
+            inviteCard.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            inviteCard.style.opacity = '0';
+            inviteCard.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                inviteCard.style.display = 'none';
+                successCard.style.display = 'block';
+                // Trigger reflow
+                successCard.offsetHeight;
+                successCard.style.opacity = '1';
+                
+                // Start spawning background hearts
+                heartsInterval = setInterval(spawnHeart, 300);
+            }, 400);
         });
     </script>
 </body>
