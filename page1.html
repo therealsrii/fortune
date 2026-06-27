@@ -12,8 +12,8 @@
         :root {
             --text-primary: #4a3b32;
             --text-secondary: #7a6a5e;
-            --star-empty: #eddcdb;
-            --star-filled: #ff96a7;
+            --star-empty: #ffe3e8;
+            --star-filled: #ff4d73;
             --btn-text: #ffffff;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,6 +77,7 @@
         .star.filled {
             color: var(--star-filled);
             transform: scale(1.15);
+            text-shadow: 0 0 8px rgba(255, 77, 115, 0.6);
         }
         .btn-next {
             width: 100%;
@@ -119,11 +120,11 @@
 </head>
 <body>
     <div class="survey-container">
-        <h1>Date Review</h1>
+        <h1>The Post-Date Accountability Report</h1>
 
         <div class="question-block">
-            <span class="question-title">Banter Quality</span>
-            <div class="stars-container" data-metric="banter">
+            <span class="question-title">The Venue Selection (Rate the ambiance)</span>
+            <div class="stars-container" data-metric="venue">
                 <button type="button" class="star" data-value="1">★</button>
                 <button type="button" class="star" data-value="2">★</button>
                 <button type="button" class="star" data-value="3">★</button>
@@ -133,8 +134,8 @@
         </div>
 
         <div class="question-block">
-            <span class="question-title">Eye Contact</span>
-            <div class="stars-container" data-metric="eyeContact">
+            <span class="question-title">Sri's Absolute Mastery of Uno 👑</span>
+            <div class="stars-container" data-metric="sriUno">
                 <button type="button" class="star" data-value="1">★</button>
                 <button type="button" class="star" data-value="2">★</button>
                 <button type="button" class="star" data-value="3">★</button>
@@ -144,8 +145,8 @@
         </div>
 
         <div class="question-block">
-            <span class="question-title">Snack Selection</span>
-            <div class="stars-container" data-metric="snackSelection">
+            <span class="question-title">Yashika's Uno 'Strategy' (Losing 3 out of 4 games 📉)</span>
+            <div class="stars-container" data-metric="yashikaUno">
                 <button type="button" class="star" data-value="1">★</button>
                 <button type="button" class="star" data-value="2">★</button>
                 <button type="button" class="star" data-value="3">★</button>
@@ -155,8 +156,8 @@
         </div>
 
         <div class="question-block">
-            <span class="question-title">Awkward Silence Frequency</span>
-            <div class="stars-container" data-metric="awkwardSilence">
+            <span class="question-title">Frequency of Panicked Silences 🤐</span>
+            <div class="stars-container" data-metric="panickedSilences">
                 <button type="button" class="star" data-value="1">★</button>
                 <button type="button" class="star" data-value="2">★</button>
                 <button type="button" class="star" data-value="3">★</button>
@@ -166,7 +167,7 @@
         </div>
 
         <div class="question-block">
-            <span class="question-title">Overall Vibe</span>
+            <span class="question-title">Overall Vibe (Be honest, but not too honest)</span>
             <div class="stars-container" data-metric="overallVibe">
                 <button type="button" class="star" data-value="1">★</button>
                 <button type="button" class="star" data-value="2">★</button>
@@ -184,10 +185,10 @@
         const btnNext = document.getElementById('btn-next');
 
         const ratings = {
-            banter: 0,
-            eyeContact: 0,
-            snackSelection: 0,
-            awkwardSilence: 0,
+            venue: 0,
+            sriUno: 0,
+            yashikaUno: 0,
+            panickedSilences: 0,
             overallVibe: 0
         };
 
