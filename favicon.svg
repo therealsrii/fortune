@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Simplified John Snow cholera map: tilted streets, death bars along Broad Street, the pump -->
+  <defs>
+    <clipPath id="tile"><rect x="4" y="4" width="56" height="56" rx="10"/></clipPath>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#ffffff" stroke="#222222" stroke-width="4"/>
+  <g clip-path="url(#tile)">
+    <g transform="rotate(-28 32 32)">
+      <g stroke="#a3a3a3" stroke-width="2.2">
+        <line x1="-20" y1="13" x2="84" y2="13"/>
+        <line x1="-20" y1="51" x2="84" y2="51"/>
+        <line x1="12" y1="-20" x2="12" y2="84"/>
+        <line x1="50" y1="-20" x2="50" y2="84"/>
+      </g>
+      <line x1="-20" y1="32" x2="84" y2="32" stroke="#555555" stroke-width="3"/>
+      <g fill="#111111">
+        <rect x="17" y="25" width="3.2" height="7"/>
+        <rect x="21.5" y="21" width="3.2" height="11"/>
+        <rect x="26" y="15" width="3.6" height="17"/>
+        <rect x="34.5" y="19" width="3.2" height="13"/>
+        <rect x="39" y="24" width="3.2" height="8"/>
+        <rect x="43.5" y="27" width="3" height="5"/>
+        <rect x="23" y="33.5" width="3" height="8"/>
+        <rect x="28" y="33.5" width="3.4" height="12"/>
+        <rect x="36" y="33.5" width="3" height="6"/>
+      </g>
+      <circle cx="32" cy="32" r="3.6" fill="#485fc7" stroke="#ffffff" stroke-width="1.2"/>
+    </g>
+  </g>
+</svg>
