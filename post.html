@@ -3,222 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Read full publication on Cog in the Wheel.">
-    <title>Blog Post — Cog in the Wheel</title>
-    <link rel="stylesheet" href="./style.css?v=2.5">
+    <title>Cog in the Wheel</title>
+    <meta name="description" content="A perspective by Sri.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css?v=7">
 </head>
 <body>
+    <main class="page">
+        <nav class="site-nav">
+            <a class="site-name" href="./index.html">Cog in the Wheel</a>
+            <span><a href="./index.html#perspectives-heading">Perspectives</a><a href="./gallery.html">Gallery</a></span>
+        </nav>
 
-    <!-- Header Navigation -->
-    <header>
-        <div class="container">
-            <h1 class="site-title"><a href="./index.html">Cog in the Wheel</a></h1>
-            <nav class="main-nav">
-                <a href="./index.html" class="nav-link">Home</a>
-                <a href="./blog.html" class="nav-link active">Blog posts & publications</a>
-                <a href="./contact.html" class="nav-link">Contact Sri</a>
-            </nav>
-        </div>
-    </header>
+        <article class="essay">
+            <h1 class="essay-title" id="post-title">Loading…</h1>
+            <div class="essay-meta" id="post-meta"></div>
+            <div id="post-body"></div>
+        </article>
 
-    <!-- Main Content -->
-    <main>
-        <div class="container">
-            <article class="post-detail">
-                <header class="post-header">
-                    <div class="blog-meta" id="post-date">Loading...</div>
-                    <h1 class="post-title" id="post-title">Loading Article...</h1>
-                    <div class="post-image-container" id="post-image-container">
-                        <img src="" id="post-image" alt="Article Hero Image" class="post-hero-image">
-                    </div>
-                </header>
-                
-                <div class="post-body" id="post-body">
-                    <p>Fetching article content...</p>
-                </div>
-                
-                <div class="post-footer">
-                    <hr class="post-footer-divider">
-                    <a href="./blog.html" class="back-to-blog">&larr; Back to Blogs & Publications</a>
-                </div>
-            </article>
-        </div>
-
-        <!-- Related Posts Section (Spans 100vw) -->
-        <section class="related-posts-section" id="related-posts-section" style="display: none;">
-            <div class="related-section-divider"></div>
-            <div class="related-posts-header-container">
-                <h2 class="related-posts-title">Continue Reading</h2>
-            </div>
-            <div class="blog-grid" id="related-posts-grid">
-                <!-- Dynamically generated rows and tiles will be injected here -->
-            </div>
-        </section>
+        <p class="footer-line"><a href="./index.html">&larr; Back to the home page</a></p>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; Sri. Curated in 2026.</p>
-        </div>
-    </footer>
-
-    <!-- Dynamic Article Loading Script -->
+    <script src="./perspectives.js"></script>
     <script>
-        const posts = {
-            'whitespace': {
-                title: 'The Power of Whitespace in Minimalist Web Design',
-                date: 'June 20, 2026 — Essay',
-                image: './Single_cell_01.jpg',
-                file: './posts/whitespace.html',
-                summary: 'An examination of how empty space shapes user experiences, creates visual hierarchy, and lets high-quality design breathe. In a world full of clutter, silence is the ultimate luxury.',
-                tag: 'Medium'
-            },
-            'shadows': {
-                title: 'Camera in Hand: Exploring Shadows and Light',
-                date: 'May 15, 2026 — Photography',
-                image: './DR_MFP_07.jpg',
-                file: './posts/shadows.html',
-                summary: 'Observations on capturing street geometry, light shafts, and high-contrast black-and-white forms in urban landscapes. A study in finding beauty in the overlooked corners.',
-                tag: 'Visuals'
-            },
-            'code-medium': {
-                title: 'Writings & Platforms: Code as a Medium',
-                date: 'April 10, 2026 — Technology',
-                image: './DR_MFP_04.jpg',
-                file: './posts/code-medium.html',
-                summary: 'Why self-publishing on a custom-built, lightweight website is a statement of ownership and simplicity in the modern web ecosystem. Moving away from corporate platforms to static pages.',
-                tag: 'Digital Garden'
-            },
-            'modular-hardware': {
-                title: 'Designing for Scale: Modular Hardware Architectures',
-                date: 'March 18, 2026 — Hardware',
-                image: './microfluidic_chip_02.png',
-                file: './posts/modular-hardware.html',
-                summary: 'An overview of principles for developing scalable and modular microfluidic platforms, facilitating rapid prototyping and assembly of custom biological assays.',
-                tag: 'Bio Design'
-            },
-            'flow-mechanics': {
-                title: 'The Mechanics of Flow: Fluid Dynamics in Microscale',
-                date: 'February 22, 2026 — Research',
-                image: './lab_setup_02.png',
-                file: './posts/flow-mechanics.html',
-                summary: 'An exploration of laminar flow, diffusion, and fluid behavior in microfluidic channels. Understanding how physics shifts when scaled down to the micron level.',
-                tag: 'Physics'
-            },
-            'cell-sorting': {
-                title: 'Single-Cell Sorting: Abstract Patterns of Selection',
-                date: 'January 14, 2026 — Biology',
-                image: './microscope_view_03.png',
-                file: './posts/cell-sorting.html',
-                summary: 'A deep dive into automated microfluidic cell isolation systems, analyzing cell sorting efficiency, precision, and the visual geometry of micro-scale cellular patterns.',
-                tag: 'Systems'
-            }
-        };
+        (function () {
+            var id = new URLSearchParams(window.location.search).get('id');
+            var post = PERSPECTIVES.find(function (p) { return p.id === id; });
+            var titleEl = document.getElementById('post-title');
+            var bodyEl = document.getElementById('post-body');
 
-        // Parse query parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const postId = urlParams.get('id');
-
-        const post = posts[postId];
-
-        if (post) {
-            // Inject metadata
-            document.getElementById('post-title').textContent = post.title;
-            document.getElementById('post-date').textContent = post.date;
-            document.title = `${post.title} — Cog in the Wheel`;
-            
-            const heroImg = document.getElementById('post-image');
-            heroImg.src = post.image;
-            heroImg.alt = post.title;
-            
-            // Set page description meta tag
-            const metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) {
-                metaDesc.setAttribute('content', `${post.title}. Read the full publication by Sri.`);
+            if (!post) {
+                titleEl.textContent = 'Not found';
+                bodyEl.innerHTML = '<p>That piece doesn’t exist. <a href="./index.html">Go back to the home page</a>.</p>';
+                document.title = 'Not found · Cog in the Wheel';
+                return;
             }
 
-            // Fetch and inject post body HTML
-            fetch(post.file)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Post content file not found');
-                    }
-                    return response.text();
+            titleEl.textContent = post.title;
+            document.getElementById('post-meta').textContent = post.tag;
+            document.title = post.title + ' · Cog in the Wheel';
+            document.querySelector('meta[name="description"]').setAttribute('content', post.summary);
+
+            fetch('./posts/' + post.id + '.html')
+                .then(function (r) {
+                    if (!r.ok) throw new Error('Missing post body');
+                    return r.text();
                 })
-                .then(html => {
-                    document.getElementById('post-body').innerHTML = html;
-                })
-                .catch(err => {
-                    document.getElementById('post-body').innerHTML = '<p>Error loading article content. Please try again later.</p>';
-                    console.error(err);
+                .then(function (html) { bodyEl.innerHTML = html; })
+                .catch(function () {
+                    bodyEl.innerHTML = '<p>This piece could not be loaded. Please try again later.</p>';
                 });
-
-            // Generate related posts section (Symmetric 2x2 grid of 4 other posts)
-            const postIds = ['whitespace', 'shadows', 'code-medium', 'modular-hardware', 'flow-mechanics', 'cell-sorting'];
-            const currentIndex = postIds.indexOf(postId);
-            
-            if (currentIndex !== -1) {
-                const relatedIds = [];
-                // Select the next 4 posts in sequence, wrapping around
-                for (let i = 1; i <= 4; i++) {
-                    const nextIndex = (currentIndex + i) % postIds.length;
-                    relatedIds.push(postIds[nextIndex]);
-                }
-                
-                const relatedGrid = document.getElementById('related-posts-grid');
-                if (relatedGrid) {
-                    const row1Div = document.createElement('div');
-                    row1Div.className = 'blog-grid-row';
-                    
-                    const row2Div = document.createElement('div');
-                    row2Div.className = 'blog-grid-row';
-                    
-                    relatedIds.forEach((id, index) => {
-                        const rPost = posts[id];
-                        const tileHtml = `
-                            <div class="tile-image-container">
-                                <img src="${rPost.image}" alt="${rPost.title}" class="tile-thumbnail">
-                            </div>
-                            <div class="tile-divider"></div>
-                            <div class="tile-content">
-                                <div class="blog-meta">${rPost.date}</div>
-                                <h2 class="blog-title">${rPost.title}</h2>
-                                <p class="blog-summary">${rPost.summary}</p>
-                                <div class="blog-footer">
-                                    <span class="blog-tag">${rPost.tag}</span>
-                                </div>
-                            </div>
-                        `;
-                        
-                        const tileLink = document.createElement('a');
-                        tileLink.href = `./post.html?id=${id}`;
-                        tileLink.className = 'blog-tile';
-                        tileLink.innerHTML = tileHtml;
-                        
-                        if (index < 2) {
-                            row1Div.appendChild(tileLink);
-                        } else {
-                            row2Div.appendChild(tileLink);
-                        }
-                    });
-                    
-                    relatedGrid.appendChild(row1Div);
-                    relatedGrid.appendChild(row2Div);
-                    
-                    // Show the related posts section
-                    document.getElementById('related-posts-section').style.display = 'block';
-                }
-            }
-        } else {
-            // Post not found
-            document.getElementById('post-title').textContent = 'Article Not Found';
-            document.getElementById('post-date').textContent = '';
-            document.getElementById('post-image-container').style.display = 'none';
-            document.getElementById('post-body').innerHTML = '<p>The requested article could not be found. <a href="./blog.html">Go back to writings</a>.</p>';
-            document.title = 'Article Not Found — Cog in the Wheel';
-        }
+        })();
     </script>
-
 </body>
 </html>

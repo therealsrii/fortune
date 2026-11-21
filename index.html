@@ -3,88 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sri — Minimalist portfolio, design, development and reflections.">
     <title>Cog in the Wheel</title>
-    <link rel="stylesheet" href="./style.css?v=2.5">
+    <meta name="description" content="Mechanical engineer and PhD candidate in biomedical engineering, working across semiconductors, biology and fluid dynamics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css?v=7">
 </head>
 <body>
+    <main class="page">
 
-    <!-- Split Hero Section -->
-    <section class="split-hero">
-        <div class="hero-left">
-            <h1 class="hero-brand"><a href="./index.html">Cog in the Wheel</a></h1>
-        </div>
-        <div class="hero-right">
-            <nav class="hero-nav">
-                <a href="./index.html" class="hero-nav-link active">Home</a>
-                <a href="./blog.html" class="hero-nav-link">Blog posts & publications</a>
-                <a href="./contact.html" class="hero-nav-link">Contact Sri</a>
-            </nav>
-            <div class="hero-about-content">
-                <p class="hero-about-text">
-                    The world is driven by massive, complex systems, and I view myself as just <strong>one small cog</strong> trying to help the wheels of <strong>healthcare and sustainable tech</strong> turn a little smoother. My day-to-day focuses on <strong>researching and building physical microfluidic hardware</strong> using a variety of fabrication techniques to bridge the gap between early concepts and functional devices. This blog is simply my corner to document that process, exploring the quiet, often messy mechanics of <strong>how ideas are actually translated into the real world</strong>.
-                </p>
-            </div>
-        </div>
-    </section>
+        <nav class="site-nav">
+            <a class="site-name" href="./index.html">Cog in the Wheel</a>
+            <span><a href="#perspectives-heading">Perspectives</a><a href="./gallery.html">Gallery</a></span>
+        </nav>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Wider container for gallery images -->
-        <div class="gallery-container">
-            <section class="image-gallery">
-                
-                <!-- Block 1: Saffron Gold -->
-                <div class="gallery-block block-saffron">
-                    <div class="gallery-image-container">
-                        <img src="./DR_MFP_04.jpg" alt="DR_MFP_04" class="gallery-image">
-                    </div>
-                </div>
-                
-                <!-- Line 2 -->
-                <hr class="gallery-divider">
-                
-                <!-- Block 2: Dusty Amethyst -->
-                <div class="gallery-block block-amethyst">
-                    <div class="gallery-image-container">
-                        <img src="./DR_MFP_07.jpg" alt="DR_MFP_07" class="gallery-image">
-                    </div>
-                </div>
-                
-                <!-- Line 3 -->
-                <hr class="gallery-divider">
-                
-                <!-- Block 3: Cobalt Blue -->
-                <div class="gallery-block block-cobalt">
-                    <div class="gallery-image-container">
-                        <img src="./Single_cell_01.jpg" alt="Single_cell_01" class="gallery-image">
-                    </div>
-                </div>
-                
-                <!-- Line 4 -->
-                <hr class="gallery-divider">
-                
-                <!-- Block 4: Burnt Sienna -->
-                <div class="gallery-block block-sienna">
-                    <div class="gallery-image-container">
-                        <img src="./2025_10_01_04_55_02_547797.png" alt="2025_10_01_04_55_02_547797" class="gallery-image">
-                    </div>
-                </div>
+        <p>I'm <strong>Sri</strong>, a mechanical engineer by trade and a PhD candidate in the School of Biomedical Engineering. My research sits at the intersection of semiconductors, biology and fluid dynamics, aimed at critical and pressing problems in healthcare.</p>
 
-                <!-- Final Line + Bottom Spacer -->
-                <hr class="gallery-divider">
-                <div class="gallery-spacer"></div>
+        <p>I work on fluid flow across eight orders of magnitude, from microfluidic probes running at microlitres per minute to systems moving hundreds of litres per minute, and I can tell what will hold up at each scale. The work runs across industries too, from healthcare to critical minerals, agriculture and biomanufacturing, and the question is usually the same: does the science still work at scale, and at a price anyone will pay?</p>
 
-            </section>
-        </div>
+        <p>Hardware and biological research still move in cycles of months and years. Shortening those cycles is the work that matters most to me, and lately it has pulled me toward AI. I'm a scale-up engineer exploring where AI can make that work faster: choosing which experiments to run, running more of them in parallel, and catching problems before anything gets built. One idea I keep coming back to is <a href="./post.html?id=data-on-request">biological data on request</a>, where you ask a specific question and an automated lab sends back the data.</p>
+
+        <h2 id="perspectives-heading">Perspectives</h2>
+
+        <ul id="perspectives"></ul>
+
+        <p class="footer-line">&copy; Sri, 2026 · Contact details coming soon</p>
+
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; Sri. Curated in 2026.</p>
-        </div>
-    </footer>
-
+    <script src="./perspectives.js"></script>
+    <script>
+        (function () {
+            var list = document.getElementById('perspectives');
+            PERSPECTIVES.forEach(function (p) {
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                a.href = './post.html?id=' + encodeURIComponent(p.id);
+                a.textContent = p.title;
+                li.appendChild(a);
+                list.appendChild(li);
+            });
+        })();
+    </script>
 </body>
 </html>
