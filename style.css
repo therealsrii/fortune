@@ -80,6 +80,16 @@ li + li { margin-top: 0.25em; }
 .essay-meta { font-style: italic; color: var(--muted); margin-bottom: 1.5em; }
 .essay h2 { font-size: 1.25em; margin: 1.4em 0 0.8em; }
 .essay .credibility { font-style: italic; color: var(--muted); margin-top: 2em; }
+.essay .dek { font-size: 1.1em; font-style: italic; color: var(--muted); margin-bottom: 1.5em; }
+.essay blockquote { margin: 1.2em 0; padding: 0.2em 0 0.2em 1em; border-left: 4px solid var(--link); font-weight: 700; }
+.essay .chart { margin: 1.8em 0; text-align: center; }
+.essay .chart img { display: block; width: 100%; height: auto; }
+.essay .chart figcaption { font-size: 19px; font-style: italic; color: var(--muted); margin-top: 0.5em; }
+.essay .sources { margin-top: 2.5em; padding-top: 0.5em; border-top: 1px solid #e5e5e5; font-size: 17px; color: var(--muted); }
+.essay .sources h2 { font-size: 18px; }
+.essay .sources ul { margin-top: 0.5em; }
+
+.writing .soon { color: var(--muted); }
 
 /* Light-blue band across the bottom */
 .band {
@@ -98,4 +108,83 @@ li + li { margin-top: 0.25em; }
     ul { margin-left: 1.25em; }
     .gallery { grid-template-columns: 1fr; }
     .band p { font-size: 18px; }
+}
+
+/* ---------- Article pages (Substack-style reading layout) ---------- */
+.post-page { color: #363737; }
+
+.topbar {
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.topbar-logo img { display: block; width: 36px; height: 36px; object-fit: cover; border-radius: 6px; border: 1px solid #e6e6e6; }
+.topbar-name { text-align: center; font-weight: 700; font-size: 24px; color: #363737; }
+.topbar-name:hover { color: var(--link); text-decoration: none; }
+
+.article { max-width: 728px; margin: 0 auto; padding: 36px 20px 48px; }
+
+.article-title { font-family: var(--body); font-weight: 700; font-size: 38px; line-height: 1.15; color: #363737; margin: 0 0 10px; }
+.article-subtitle { font-family: var(--head); font-weight: 400; font-size: 19px; line-height: 1.45; color: #757575; margin: 0 0 22px; }
+
+.byline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+    border-bottom: 1px solid #e6e6e6;
+}
+.byline-author { font-family: var(--head); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #363737; }
+.byline-date { font-family: var(--head); font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: #757575; margin-top: 2px; }
+
+.share-btn {
+    font-family: var(--head);
+    font-size: 14px;
+    color: #555;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    padding: 7px 16px;
+    cursor: pointer;
+}
+.share-btn:hover { border-color: #aaa; color: #222; }
+.share-btn.copied { color: #2f7a46; border-color: #9cc7a8; background: #f1f8f3; }
+
+.article-body { font-size: 21px; line-height: 1.6; }
+.article-body p { margin: 0 0 1.1em; }
+.article-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.article-body h2 { font-size: 26px; margin: 1.6em 0 0.6em; color: #363737; }
+.article-body ul { margin: 0 0 1.1em 1.4em; }
+.article-body li + li { margin-top: 0.5em; }
+.article-body blockquote { margin: 1.4em 0; padding: 0.1em 0 0.1em 1em; border-left: 4px solid var(--link); font-weight: 700; }
+
+.article-body .chart { margin: 2em 0; text-align: center; }
+.article-body .chart img { display: block; width: 100%; height: auto; }
+.article-body .chart figcaption { font-size: 15px; color: #757575; margin-top: 10px; }
+
+.article-body .sources { margin-top: 2.5em; padding-top: 1em; border-top: 1px solid #e6e6e6; font-size: 16px; color: #757575; }
+.article-body .sources h2 { font-size: 17px; margin-top: 0.5em; }
+
+.article-end {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2.5em;
+    padding-top: 20px;
+    border-top: 1px solid #e6e6e6;
+    font-family: var(--head);
+    font-size: 16px;
+}
+
+@media (max-width: 640px) {
+    .topbar { padding: 10px 16px; }
+    .topbar-name { font-size: 20px; }
+    .article { padding: 24px 16px 40px; }
+    .article-title { font-size: 30px; }
+    .article-subtitle { font-size: 17px; }
+    .article-body { font-size: 19px; }
+    .article-body h2 { font-size: 22px; }
 }

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=9">
+    <link rel="stylesheet" href="./style.css?v=12">
 </head>
 <body>
     <main class="page">
@@ -22,7 +22,7 @@
 
         <p>I'm curious about a lot of things, but I keep coming back to counterintuitive ideas and trends in science and technology: the places where the data says something different from the story everyone tells. I like finding those numbers, charting them, and writing about what they mean.</p>
 
-        <p>Most of what I write here is commentary in that spirit. Why a breakthrough can still lose to a factory that was paid off decades ago. What happens when data itself becomes a commodity. How regulation can make it harder, not easier, to unseat the incumbents. My own work helps me read these stories: I work on fluid flow from microlitres to hundreds of litres a minute, across healthcare, critical minerals, agriculture and biomanufacturing, so I see up close where good science meets cost, scale and the market.</p>
+        <p>I like to look past the headline at what sits underneath it: the costs behind a breakthrough, the incentives behind a market, the physics behind a scale-up. That's usually where the surprises are. My own work helps. I work on fluid flow from microlitres to hundreds of litres a minute, across healthcare, critical minerals, agriculture and biomanufacturing, so I see up close where good science meets cost, scale and the market.</p>
 
         <h4 id="perspectives-heading">☞ Perspectives</h4>
 
@@ -49,14 +49,20 @@
             var list = document.getElementById('perspectives');
             PERSPECTIVES.forEach(function (p) {
                 var li = document.createElement('li');
-                var a = document.createElement('a');
-                a.href = './post.html?id=' + encodeURIComponent(p.id);
-                a.textContent = p.title;
-                var tag = document.createElement('em');
-                tag.textContent = p.tag;
-                li.appendChild(a);
-                li.appendChild(document.createTextNode(' '));
-                li.appendChild(tag);
+                var note = document.createElement('em');
+                if (p.soon) {
+                    li.className = 'soon';
+                    li.appendChild(document.createTextNode(p.title + ' '));
+                    note.textContent = '(coming soon)';
+                } else {
+                    var a = document.createElement('a');
+                    a.href = p.url || './post.html?id=' + encodeURIComponent(p.id);
+                    a.textContent = p.title;
+                    li.appendChild(a);
+                    li.appendChild(document.createTextNode(' '));
+                    note.textContent = p.tag;
+                }
+                li.appendChild(note);
                 list.appendChild(li);
             });
         })();

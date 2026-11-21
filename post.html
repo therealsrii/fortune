@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=9">
+    <link rel="stylesheet" href="./style.css?v=12">
 </head>
 <body>
     <main class="page">
@@ -42,8 +42,15 @@
             }
 
             titleEl.textContent = post.title;
-            document.getElementById('post-meta').textContent = post.tag;
             document.title = post.title + ' · Cog in the Wheel';
+
+            if (post.soon) {
+                document.getElementById('post-meta').textContent = 'Coming soon';
+                bodyEl.innerHTML = '<p>This piece isn’t out yet. <a href="./index.html">Go back to the home page</a>.</p>';
+                return;
+            }
+
+            document.getElementById('post-meta').textContent = post.tag;
             document.querySelector('meta[name="description"]').setAttribute('content', post.summary);
 
             fetch('./posts/' + post.id + '.html')
