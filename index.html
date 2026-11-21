@@ -7,16 +7,15 @@
     <meta name="description" content="Mechanical engineer and PhD candidate in biomedical engineering, working across semiconductors, biology and fluid dynamics.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=7">
+    <link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css?v=8">
 </head>
 <body>
     <main class="page">
 
-        <nav class="site-nav">
-            <a class="site-name" href="./index.html">Cog in the Wheel</a>
-            <span><a href="#perspectives-heading">Perspectives</a><a href="./gallery.html">Gallery</a></span>
-        </nav>
+        <div class="frontispiece">
+            <img src="./header.jpg" width="500" height="356" alt="Microscope image of a microfluidic cross junction with curved side channels">
+        </div>
 
         <p>I'm <strong>Sri</strong>, a mechanical engineer by trade and a PhD candidate in the School of Biomedical Engineering. My research sits at the intersection of semiconductors, biology and fluid dynamics, aimed at critical and pressing problems in healthcare.</p>
 
@@ -24,13 +23,24 @@
 
         <p>Hardware and biological research still move in cycles of months and years. Shortening those cycles is the work that matters most to me, and lately it has pulled me toward AI. I'm a scale-up engineer exploring where AI can make that work faster: choosing which experiments to run, running more of them in parallel, and catching problems before anything gets built. One idea I keep coming back to is <a href="./post.html?id=data-on-request">biological data on request</a>, where you ask a specific question and an automated lab sends back the data.</p>
 
-        <h2 id="perspectives-heading">Perspectives</h2>
+        <h4 id="perspectives-heading">☞ Perspectives</h4>
 
-        <ul id="perspectives"></ul>
+        <ul class="writing" id="perspectives"></ul>
 
-        <p class="footer-line">&copy; Sri, 2026 · Contact details coming soon</p>
+        <h4>Gallery</h4>
+
+        <p>Devices I've fabricated by hand, under the microscope. <a href="./gallery.html">See the gallery</a>.</p>
+
+        <h4>Contact</h4>
+
+        <p>Contact details coming soon.</p>
 
     </main>
+
+    <footer class="band">
+        <p><a href="#perspectives-heading"><em>Read the perspectives</em></a>. Shortening the cycles of hardware and biological research.</p>
+        <p class="fine">&copy; Sri, 2026</p>
+    </footer>
 
     <script src="./perspectives.js"></script>
     <script>
@@ -41,7 +51,11 @@
                 var a = document.createElement('a');
                 a.href = './post.html?id=' + encodeURIComponent(p.id);
                 a.textContent = p.title;
+                var tag = document.createElement('em');
+                tag.textContent = p.tag;
                 li.appendChild(a);
+                li.appendChild(document.createTextNode(' '));
+                li.appendChild(tag);
                 list.appendChild(li);
             });
         })();
