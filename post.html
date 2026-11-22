@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cog in the Wheel</title>
+    <title>The Pump Handle</title>
     <meta name="description" content="A perspective by Sri.">
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <link rel="icon" href="./favicon-32.png" sizes="32x32" type="image/png">
@@ -15,7 +15,7 @@
 </head>
 <body>
     <main class="page">
-        <a class="home-link" href="./index.html">&larr; Cog in the Wheel</a>
+        <a class="home-link" href="./index.html">&larr; The Pump Handle</a>
 
         <article class="essay">
             <h1 class="essay-title" id="post-title">Loading…</h1>
@@ -25,7 +25,7 @@
     </main>
 
     <footer class="band">
-        <p><a href="./index.html#perspectives-heading"><em>Read the perspectives</em></a>. Shortening the cycles of hardware and biological research.</p>
+        <p><a href="./index.html#perspectives-heading"><em>Read the perspectives</em></a>. Looking past the headline at what the data actually says.</p>
         <p class="fine">&copy; Sri, 2026</p>
     </footer>
 
@@ -40,12 +40,12 @@
             if (!post) {
                 titleEl.textContent = 'Not found';
                 bodyEl.innerHTML = '<p>That piece doesn’t exist. <a href="./index.html">Go back to the home page</a>.</p>';
-                document.title = 'Not found · Cog in the Wheel';
+                document.title = 'Not found · The Pump Handle';
                 return;
             }
 
             titleEl.textContent = post.title;
-            document.title = post.title + ' · Cog in the Wheel';
+            document.title = post.title + ' · The Pump Handle';
 
             if (post.soon) {
                 document.getElementById('post-meta').textContent = 'Coming soon';
